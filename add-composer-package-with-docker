@@ -1,0 +1,31 @@
+# arguments.sh
+
+# Default values of arguments
+VOLUMES=0
+PACKAGE=0
+
+# Loop through arguments and process them
+for arg in "$@"
+do
+    case $arg in
+		-p|--package)
+		PACKAGE="$2"
+		shift
+		;;
+        -v|--volumes)
+        VOLUMES="$2"
+        shift # Remove --initialize from processing
+        shift # Remove generic argument from processing
+        ;;
+    esac
+done
+
+echo "# SET VOLUMES: $VOLUMES"
+echo "# SET PACKAGE: $PACKAGE"
+
+$i 
+
+echo "docker run --rm -it -v $VOLUMES:/var/www -w /var/www composer composer require $PACKAGE"
+
+docker run --rm -it -v "$VOLUMES:/var/www" -w "/var/www" composer composer require $PACKAGE --ignore-platform-reqs
+#composer require enqueue/amqp-bunny:^0.8
